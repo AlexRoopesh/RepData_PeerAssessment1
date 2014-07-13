@@ -1,9 +1,4 @@
----
-title: "Reproducible Research : Assignment 1"
-output:
-  html_document:
-    keep_md: true
----
+# Reproducible Research : Assignment 1
 
 #### Environment Details
 
@@ -26,30 +21,45 @@ loaded via a namespace (and not attached):
 
 
 Reading the activity file and converting Date column from factor to Date format
-```{r, echo =TRUE}
+
+```r
 activity <- read.csv("./data/activity.csv")
 activity[,2]<-as.Date(activity[,2],format="%Y-%m-%d")
-
 ```
 
 Plotting the total steps per day
-```{r, echo=TRUE}
+
+```r
 a<-aggregate( steps~date, activity, sum, na.action=na.pass )
 hist(a$steps, breaks=25, xlab="Total Steps", main="Summary of steps", col=8)
+```
+
+![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
+
+```r
 mean_of_daily_totals <- as.character(mean(a[,2],na.rm=TRUE))
 median_of_daily_totals <- as.character(median(a[,2],na.rm=TRUE))
-
 ```
-The mean is `r mean_of_daily_totals`  
-The median is `r median_of_daily_totals`
+The mean is 10766.1886792453  
+The median is 10765
 
 
 Average daily activity pattern  
 
-```{r, echo=TRUE}
+
+```r
 b<-aggregate( steps~interval, activity, mean, na.action=na.omit )
 plot(b$interval, b$steps, type="l", col="blue", xlab="Interval", ylab="Average steps", main="")
+```
+
+![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
+
+```r
 b1<- subset(b,b$steps==max(b$steps))
 print(b1$interval)
 ```
-The interval with the maximum number of steps is `r b1$interval`
+
+```
+## [1] 835
+```
+The interval with the maximum number of steps is 835
