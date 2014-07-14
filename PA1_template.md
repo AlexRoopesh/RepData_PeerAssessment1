@@ -31,7 +31,7 @@ Plotting the total steps per day
 
 ```r
 a<-aggregate( steps~date, activity, sum, na.action=na.pass )
-hist(a$steps, breaks=25, xlab="Total Steps", main="Summary of steps", col=8)
+hist(a$steps, breaks=25, xlab="Total Steps", main="Summary of steps", col="blue")
 ```
 
 ![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
@@ -63,3 +63,41 @@ print(b1$interval)
 ## [1] 835
 ```
 The interval with the maximum number of steps is 835
+
+#### Imputing missing values  
+Derive values to impute based on average per interval over the entire dataset    
+Create the new dataset with the imputed values in place of "NA"  
+Make a histogram with total steps taken each day    
+compare with first step the difference in mean and median  
+
+
+```r
+##c<-subset(activity, is.na(steps) | is.na(date) | is.na(interval))
+c1<-merge(activity, b , by="interval")
+for(i in 1:length(c1$steps.x))
+    {if (is.na(c1$steps.x[i])) 
+        {c1$steps.x[i] <- c1$steps.y[i]
+        }
+    }
+c1 <- subset(c1, select=c(1:3))
+c1<-aggregate( steps.x~date, c1, sum)
+hist(c1$steps.x, breaks=25, xlab="Total Steps", main="Summary of imputed steps", col="blue")
+```
+
+![plot of chunk unnamed-chunk-4](./PA1_template_files/figure-html/unnamed-chunk-4.png) 
+
+```r
+print(as.character(mean(c1[,2])))
+```
+
+```
+## [1] "10766.1886792453"
+```
+
+```r
+print(as.character(median(c1[,2])))
+```
+
+```
+## [1] "10766.1886792453"
+```
