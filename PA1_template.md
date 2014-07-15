@@ -19,6 +19,9 @@ other attached packages:
 loaded via a namespace (and not attached):  
 [1] tools_3.1.0
 
+#### Start of the assignment 
+
+#####  Loading and preprocessing the data  
 
 Reading the activity file and converting Date column from factor to Date format
 
@@ -26,8 +29,8 @@ Reading the activity file and converting Date column from factor to Date format
 activity <- read.csv("./data/activity.csv")
 activity[,2]<-as.Date(activity[,2],format="%Y-%m-%d")
 ```
-
-Plotting the total steps per day
+  
+##### Plotting the total steps per day  
 
 ```r
 a<-aggregate( steps~date, activity, sum, na.action=na.pass )
@@ -37,14 +40,14 @@ hist(a$steps, breaks=25, xlab="Total Steps", main="Summary of steps", col="blue"
 ![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
 
 ```r
-mean_of_daily_totals <- as.character(mean(a[,2],na.rm=TRUE))
-median_of_daily_totals <- as.character(median(a[,2],na.rm=TRUE))
+mean_of_daily_totals <- as.character(round((mean(a[,2],na.rm=TRUE)), digits=2))
+median_of_daily_totals <- as.character(round((median(a[,2],na.rm=TRUE)), digits=2))
 ```
-The mean is 10766.1886792453  
+The mean is 10766.19  
 The median is 10765
 
 
-Average daily activity pattern  
+##### Average daily activity pattern    
 
 
 ```r
@@ -64,7 +67,7 @@ print(b1$interval)
 ```
 The interval with the maximum number of steps is 835
 
-#### Imputing missing values  
+##### Imputing missing values    
 Derive values to impute based on average per interval over the entire dataset    
 Create the new dataset with the imputed values in place of "NA"  
 Make a histogram with total steps taken each day    
@@ -80,24 +83,33 @@ for(i in 1:length(c1$steps.x))
         }
     }
 c1 <- subset(c1, select=c(1:3))
-c1<-aggregate( steps.x~date, c1, sum)
-hist(c1$steps.x, breaks=25, xlab="Total Steps", main="Summary of imputed steps", col="blue")
+c2<-aggregate( steps.x~date, c1, sum)
+hist(c2$steps.x, breaks=25, xlab="Total Steps", main="Summary of imputed steps", col="blue")
 ```
 
 ![plot of chunk unnamed-chunk-4](./PA1_template_files/figure-html/unnamed-chunk-4.png) 
 
 ```r
-print(as.character(mean(c1[,2])))
+impMean<- as.character(round(mean(c2[,2]),digits=2))
+impMedian<- as.character(round(median(c2[,2]),digits=2))
 ```
+The mean of the orginal dataset was '10766.19' and with the imputed values it is '10766.19'  
+The median of the orginal dataset was '10765' and with  the imputed values it is '10766.19'  
 
-```
-## [1] "10766.1886792453"
-```
+##### Plotting differences in activity patterns between weekdays and weekends
+
 
 ```r
-print(as.character(median(c1[,2])))
+d<- transform(c1, weekend=as.POSIXlt(date, format='%Y/%m/%d')$wday %in% c(0, 6))
+wEnd<- subset(d,d$weekend==TRUE)
+wDay<- subset(d,d$weekend==FALSE)
+
+wEndAve<-aggregate( steps.x~interval+date, wEnd, mean)
+wDayAve<-aggregate( steps.x~interval+date, wDay, mean)
+
+par(mfrow=c(2,1))
+plot(wEndAve$interval, wEndAve$steps.x, type="l", col="blue", main="Weekend", xlab="Interval", ylab="Number of steps")
+plot(wDayAve$interval, wDayAve$steps.x, type="l", col="blue", main="Weekday", xlab="Interval", ylab="Number of steps")
 ```
 
-```
-## [1] "10766.1886792453"
-```
+![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
