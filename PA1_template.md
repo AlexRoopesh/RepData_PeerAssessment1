@@ -2,22 +2,28 @@
 
 #### Environment Details
 
-R version 3.1.0 (2014-04-10)
-Platform: x86_64-w64-mingw32/x64 (64-bit)
 
-locale:
-[1] LC_COLLATE=English_Australia.1252  LC_CTYPE=English_Australia.1252   
-[3] LC_MONETARY=English_Australia.1252 LC_NUMERIC=C                          
-[5] LC_TIME=English_Australia.1252       
+```r
+sessionInfo()
+```
 
-attached base packages:  
-[1] stats     graphics  grDevices utils     datasets  methods   base     
-
-other attached packages:  
-[1] boot_1.3-11
-
-loaded via a namespace (and not attached):  
-[1] tools_3.1.0
+```
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## 
+## locale:
+## [1] LC_COLLATE=English_Australia.1252  LC_CTYPE=English_Australia.1252   
+## [3] LC_MONETARY=English_Australia.1252 LC_NUMERIC=C                      
+## [5] LC_TIME=English_Australia.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+## [1] digest_0.6.4     evaluate_0.5.5   formatR_0.10     htmltools_0.2.4 
+## [5] knitr_1.6        rmarkdown_0.2.49 stringr_0.6.2    tools_3.1.0     
+## [9] yaml_2.1.13
+```
 
 #### Start of the assignment 
 
@@ -37,7 +43,7 @@ a<-aggregate( steps~date, activity, sum, na.action=na.pass )
 hist(a$steps, breaks=25, xlab="Total Steps", main="Summary of steps", col="blue")
 ```
 
-![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
+![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
 
 ```r
 mean_of_daily_totals <- as.character(round((mean(a[,2],na.rm=TRUE)), digits=2))
@@ -55,7 +61,7 @@ b<-aggregate( steps~interval, activity, mean, na.action=na.omit )
 plot(b$interval, b$steps, type="l", col="blue", xlab="Interval", ylab="Average steps", main="")
 ```
 
-![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
+![plot of chunk unnamed-chunk-4](./PA1_template_files/figure-html/unnamed-chunk-4.png) 
 
 ```r
 b1<- subset(b,b$steps==max(b$steps))
@@ -87,7 +93,7 @@ c2<-aggregate( steps.x~date, c1, sum)
 hist(c2$steps.x, breaks=25, xlab="Total Steps", main="Summary of imputed steps", col="blue")
 ```
 
-![plot of chunk unnamed-chunk-4](./PA1_template_files/figure-html/unnamed-chunk-4.png) 
+![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
 
 ```r
 impMean<- as.character(round(mean(c2[,2]),digits=2))
@@ -112,4 +118,4 @@ plot(wEndAve$interval, wEndAve$steps.x, type="l", col="blue", main="Weekend", xl
 plot(wDayAve$interval, wDayAve$steps.x, type="l", col="blue", main="Weekday", xlab="Interval", ylab="Number of steps")
 ```
 
-![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-6](./PA1_template_files/figure-html/unnamed-chunk-6.png) 
